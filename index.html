@@ -17,7 +17,7 @@
     <!-- Custom Styles -->
     <link href="css/style.css" rel="stylesheet" />
 
-    <!-- External Scripts -->
+    <!-- reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Tailwind Configuration -->
@@ -253,7 +253,7 @@
                     <p class="text-gray-400 font-light">Interested in what we're building? Send us a message.</p>
                 </div>
 
-                <form class="space-y-4 bg-neutral-dark p-4 rounded-sm stagger-children">
+                <form id="contact-form" class="space-y-4 bg-neutral-dark p-4 rounded-sm stagger-children">
                     <div class="hidden-element">
                         <input type="text" id="name" name="name" required
                             class="w-full bg-[#1f1f1f] border border-gray-700 rounded-sm px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
@@ -272,13 +272,14 @@
                             placeholder="How can we help?"></textarea>
                     </div>
 
-                    <!-- Google reCAPTCHA v2 Placeholder -->
                     <div class="hidden-element flex justify-center py-2">
-                        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY_HERE" data-theme="dark"></div>
+                        <div class="g-recaptcha" data-sitekey="6LenLnQsAAAAAFPsdLO5T6cC0z-3V7f8Y1p7_ZRv" data-theme="dark"></div>
                     </div>
 
+                    <div id="contact-status" class="hidden text-sm font-mono text-center py-2"></div>
+
                     <div class="hidden-element pt-2">
-                        <button type="submit"
+                        <button type="submit" id="contact-submit"
                             class="w-full bg-primary text-white py-4 rounded-sm font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
                             Send Message
                         </button>

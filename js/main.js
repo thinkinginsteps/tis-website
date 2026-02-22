@@ -388,4 +388,55 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (floatingCloseBtn) {
         floatingCloseBtn.addEventListener('click', closePanel);
     }
+
+    // ─── CONTACT FORM (Formspree) ──────────────────────────────────────────────
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        const submitBtn = document.getElementById('contact-submit');
+        const statusEl = document.getElementById('contact-status');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Check reCAPTCHA is completed
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                statusEl.textContent = '✕ Please complete the reCAPTCHA check.';
+                statusEl.classList.remove('hidden', 'text-green-400');
+                statusEl.classList.add('text-red-400');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending…';
+            statusEl.className = 'text-sm font-mono text-center py-2';
+            statusEl.textContent = '';
+            statusEl.classList.add('hidden');
+
+            try {
+                const res = await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: new FormData(contactForm),
+                });
+
+                if (res.ok) {
+                    contactForm.reset();
+                    grecaptcha.reset();
+                    statusEl.textContent = '✓ Message sent — we\'ll be in touch soon.';
+                    statusEl.classList.remove('hidden', 'text-red-400');
+                    statusEl.classList.add('text-green-400');
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch {
+                statusEl.textContent = '✕ Something went wrong. Please try again.';
+                statusEl.classList.remove('hidden', 'text-green-400');
+                statusEl.classList.add('text-red-400');
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+        });
+    }
 });
