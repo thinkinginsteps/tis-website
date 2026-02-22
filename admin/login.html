@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Thinking In Steps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: #23190f;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        /* Subtle dot-grid background matching main site aesthetic */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 132, 0, 0.08) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-wrap img {
+            height: 30px;
+            filter: brightness(0) invert(1);
+            display: block;
+            margin: 0 auto 12px;
+        }
+
+        .logo-wrap span {
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            color: #554433;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 40px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #282828;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            background: #f9f9f8;
+            border: 1px solid #e5e7eb;
+            padding: 11px 14px;
+            font-size: 14px;
+            color: #282828;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .field input:focus {
+            border-color: #ff8400;
+            background: #fff;
+        }
+
+        .field input::placeholder {
+            color: #c4c4c4;
+        }
+
+        .error-box {
+            display: none;
+            background: #fff1f0;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+            font-size: 13px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            border-radius: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #ff8400;
+            color: #ffffff;
+            border: none;
+            padding: 13px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.15s;
+        }
+
+        .submit-btn:hover { background: #e07200; }
+        .submit-btn:disabled { background: #fbbf7a; cursor: not-allowed; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #554433;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+
+        .back-link:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-wrap">
+            <img src="../images/logo.png" alt="Thinking In Steps" />
+            <span>Admin Portal</span>
+        </div>
+
+        <div class="card">
+            <p class="card-title">Sign In</p>
+            <p class="card-subtitle">Access the portfolio management panel.</p>
+
+            <form id="login-form">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="admin@thinkinginsteps.com" required autocomplete="email" />
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+                </div>
+
+                <div class="error-box" id="error-msg"></div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">Sign In</button>
+            </form>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to site</a>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../js/supabase-config.js';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Redirect if already authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) window.location.href = 'dashboard.html';
+
+        const form = document.getElementById('login-form');
+        const errorMsg = document.getElementById('error-msg');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+            submitBtn.textContent = 'Signing in…';
+            submitBtn.disabled = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.style.display = 'block';
+                submitBtn.textContent = 'Sign In';
+                submitBtn.disabled = false;
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

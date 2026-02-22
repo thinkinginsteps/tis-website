@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sidebar-w: 240px;
+            --accent: #ff8400;
+            --bg-main: #f8f7f5;
+            --bg-sidebar: #282828;
+            --border: #e5e7eb;
+            --text-dark: #282828;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sidebar-logo {
+            padding: 28px 24px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo img {
+            height: 26px;
+            filter: brightness(0) invert(1);
+            display: block;
+        }
+
+        .sidebar-label {
+            font-size: 9px;
+            font-family: 'Courier New', monospace;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 12px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: color 0.15s, background 0.15s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .nav-item.active { color: #fff; background: rgba(255, 132, 0, 0.12); border-left: 2px solid var(--accent); padding-left: 10px; }
+
+        .nav-item .material-symbols-outlined { font-size: 18px; }
+
+        .sidebar-footer {
+            padding: 16px 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .user-email {
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 12px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+
+        .signout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            background: none;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 8px 12px;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .signout-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.2); }
+        .signout-btn .material-symbols-outlined { font-size: 16px; }
+
+        /* ── Main content ── */
+        .main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-main);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .topbar-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+            letter-spacing: 0.01em;
+        }
+
+        .btn-primary:hover { background: #e07200; }
+        .btn-primary .material-symbols-outlined { font-size: 16px; }
+
+        .content {
+            padding: 32px;
+            flex: 1;
+        }
+
+        /* ── Stats row ── */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 20px 24px;
+        }
+
+        .stat-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.03em;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* ── Table ── */
+        .table-wrap {
+            background: #fff;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .table-head {
+            display: grid;
+            grid-template-columns: 1fr 90px 90px 70px 60px 80px;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+        }
+
+        .th {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            padding: 12px 8px;
+        }
+
+        .tbody { }
+
+        .tr {
+            display: grid;
+            grid-template-columns: 1fr 90px 90px 70px 60px 80px;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            transition: background 0.1s;
+            align-items: center;
+        }
+
+        .tr:last-child { border-bottom: none; }
+        .tr:hover { background: #fafafa; }
+
+        .td {
+            padding: 14px 8px;
+            font-size: 13px;
+        }
+
+        .project-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .project-icon {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .project-icon .material-symbols-outlined { font-size: 16px; color: var(--text-muted); }
+
+        .badge {
+            display: inline-block;
+            font-size: 9px;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 3px 8px;
+            text-transform: uppercase;
+        }
+
+        .badge-active { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-beta { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+        .badge-internal { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-default { background: #f9fafb; color: var(--text-muted); border: 1px solid var(--border); }
+
+        .version-tag {
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-muted);
+        }
+
+        .toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+        .toggle-track {
+            position: absolute;
+            inset: 0;
+            background: #e5e7eb;
+            transition: background 0.2s;
+            border-radius: 10px;
+        }
+
+        .toggle input:checked + .toggle-track { background: var(--accent); }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 3px; left: 3px;
+            width: 14px; height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+
+        .order-input {
+            width: 48px;
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-dark);
+            background: #fff;
+            outline: none;
+            text-align: center;
+        }
+
+        .order-input:focus { border-color: var(--accent); }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+            text-decoration: none;
+        }
+
+        .action-btn:hover { color: var(--text-dark); border-color: #aaa; }
+        .action-btn.danger:hover { color: #dc2626; border-color: #fca5a5; background: #fff1f0; }
+        .action-btn .material-symbols-outlined { font-size: 15px; }
+
+        /* ── Empty / loading states ── */
+        .state-row {
+            padding: 48px 32px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .state-row .material-symbols-outlined {
+            font-size: 32px;
+            display: block;
+            margin: 0 auto 12px;
+            color: #d1d5db;
+        }
+
+        /* ── Toast ── */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text-dark);
+            color: #fff;
+            font-size: 13px;
+            padding: 12px 20px;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+        }
+
+        #toast.show { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../images/logo.png" alt="Thinking In Steps" />
+            <div class="sidebar-label">Admin</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item active" href="dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                Projects
+            </a>
+            <a class="nav-item" href="../index.html" target="_blank">
+                <span class="material-symbols-outlined">open_in_new</span>
+                View Site
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-email" id="user-email">—</div>
+            <button class="signout-btn" id="signout-btn">
+                <span class="material-symbols-outlined">logout</span>
+                Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Projects</div>
+                <div class="topbar-sub">Manage your portfolio</div>
+            </div>
+            <a href="edit.html" class="btn-primary">
+                <span class="material-symbols-outlined">add</span>
+                New Project
+            </a>
+        </div>
+
+        <div class="content">
+            <!-- Stats -->
+            <div class="stats" id="stats-row">
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-total">—</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-visible">—</div>
+                    <div class="stat-label">Visible</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="stat-images">—</div>
+                    <div class="stat-label">With Images</div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <div class="table-head">
+                    <div class="th">Project</div>
+                    <div class="th">Status</div>
+                    <div class="th">Version</div>
+                    <div class="th">Visible</div>
+                    <div class="th">Order</div>
+                    <div class="th">Actions</div>
+                </div>
+                <div class="tbody" id="projects-tbody">
+                    <div class="state-row">
+                        <span class="material-symbols-outlined">hourglass_empty</span>
+                        Loading projects…
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast"></div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../js/supabase-config.js';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ── Auth guard ────────────────────────────────────────────────────────
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; }
+
+        document.getElementById('user-email').textContent = session?.user?.email || '—';
+
+        document.getElementById('signout-btn').addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = 'login.html';
+        });
+
+        // ── Toast ─────────────────────────────────────────────────────────────
+        function showToast(msg, duration = 3000) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), duration);
+        }
+
+        // ── Fetch & render ────────────────────────────────────────────────────
+        async function loadProjects() {
+            const { data, error } = await supabase
+                .from('projects')
+                .select('*')
+                .order('sort_order', { ascending: true });
+
+            const tbody = document.getElementById('projects-tbody');
+
+            if (error) {
+                tbody.innerHTML = `<div class="state-row"><span class="material-symbols-outlined">error</span>Failed to load: ${error.message}</div>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<div class="state-row"><span class="material-symbols-outlined">inbox</span>No projects yet — <a href="edit.html" style="color:var(--accent);text-decoration:none;">create one</a></div>`;
+                document.getElementById('stat-total').textContent = '0';
+                document.getElementById('stat-visible').textContent = '0';
+                document.getElementById('stat-images').textContent = '0';
+                return;
+            }
+
+            // Stats
+            document.getElementById('stat-total').textContent = data.length;
+            document.getElementById('stat-visible').textContent = data.filter(p => p.is_visible).length;
+            document.getElementById('stat-images').textContent = data.filter(p => p.cover_url || (p.gallery_urls && p.gallery_urls.length > 0)).length;
+
+            // Render rows
+            tbody.innerHTML = data.map(p => {
+                const badgeClass = {
+                    ACTIVE: 'badge-active', BETA: 'badge-beta', INTERNAL: 'badge-internal'
+                }[p.status_label] || 'badge-default';
+
+                return `
+                <div class="tr" data-id="${p.id}">
+                    <div class="td">
+                        <div class="project-name">
+                            <div class="project-icon">
+                                <span class="material-symbols-outlined">${esc(p.icon || 'code')}</span>
+                            </div>
+                            ${esc(p.title)}
+                        </div>
+                    </div>
+                    <div class="td">
+                        <span class="badge ${badgeClass}">${esc(p.status_label || 'ACTIVE')}</span>
+                    </div>
+                    <div class="td">
+                        <span class="version-tag">${esc(p.version || '—')}</span>
+                    </div>
+                    <div class="td">
+                        <label class="toggle">
+                            <input type="checkbox" ${p.is_visible ? 'checked' : ''} data-field="is_visible" data-id="${p.id}" />
+                            <div class="toggle-track"></div>
+                            <div class="toggle-thumb"></div>
+                        </label>
+                    </div>
+                    <div class="td">
+                        <input type="number" class="order-input" value="${p.sort_order}" data-field="sort_order" data-id="${p.id}" min="0" />
+                    </div>
+                    <div class="td">
+                        <div class="row-actions">
+                            <button class="action-btn edit-btn" data-edit-id="${p.id}" title="Edit">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="action-btn danger" data-delete="${p.id}" title="Delete">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Edit buttons — store ID in sessionStorage before navigating (bypasses query-string issues)
+            tbody.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.editId;
+                    sessionStorage.setItem('editProjectId', id);
+                    window.location.href = 'edit.html?id=' + encodeURIComponent(id);
+                });
+            });
+
+            // Toggle visibility
+            tbody.querySelectorAll('input[data-field="is_visible"]').forEach(input => {
+                input.addEventListener('change', async () => {
+                    const { error } = await supabase
+                        .from('projects')
+                        .update({ is_visible: input.checked })
+                        .eq('id', input.dataset.id);
+                    showToast(error ? 'Update failed.' : (input.checked ? 'Project shown on site.' : 'Project hidden from site.'));
+                });
+            });
+
+            // Update sort order on blur
+            tbody.querySelectorAll('input[data-field="sort_order"]').forEach(input => {
+                input.addEventListener('change', async () => {
+                    const val = parseInt(input.value, 10);
+                    if (isNaN(val)) return;
+                    const { error } = await supabase
+                        .from('projects')
+                        .update({ sort_order: val })
+                        .eq('id', input.dataset.id);
+                    showToast(error ? 'Update failed.' : 'Order saved.');
+                });
+            });
+
+            // Delete
+            tbody.querySelectorAll('[data-delete]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    if (!confirm('Delete this project? This cannot be undone.')) return;
+                    const id = btn.dataset.delete;
+                    const { error } = await supabase.from('projects').delete().eq('id', id);
+                    if (error) { showToast('Delete failed.'); return; }
+                    showToast('Project deleted.');
+                    loadProjects();
+                });
+            });
+        }
+
+        function esc(str) {
+            if (str == null) return '';
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        loadProjects();
+    </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Thinking In Steps - Internal Dev Studio</title>
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <!-- Custom Styles -->
+    <link href="css/style.css" rel="stylesheet" />
+
+    <!-- External Scripts -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff8400",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#23190f",
+                        "neutral-dark": "#282828",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #f0f0f0 1px, transparent 1px), linear-gradient(to bottom, #f0f0f0 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-white text-neutral-dark font-body tech-bg">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center transition-opacity hover:opacity-80">
+                <img src="images/logo.png" alt="Thinking In Steps Logo" class="h-8 w-auto object-contain" />
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+                <a class="hover:text-primary transition-colors" href="#">Home</a>
+                <a class="hover:text-primary transition-colors" href="#projects">Our Projects</a>
+                <a class="hover:text-primary transition-colors" href="#about">Studio</a>
+                <a href="#contact"
+                    class="bg-primary hover:bg-orange-600 text-white px-6 py-2.5 rounded-sm font-semibold transition-all shadow-sm">
+                    Contact
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <section class="relative overflow-hidden pt-24 pb-32 px-6 border-b border-gray-100 animate-fade-in-up">
+            <div class="absolute inset-0 grid-bg pointer-events-none -z-10"></div>
+
+            <div class="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-gray-200 text-xs font-mono font-medium text-gray-500 mb-8 rounded-sm">
+                    <span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+                    INTERNAL LAB v2.0
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-bold text-neutral-dark leading-[1.1] tracking-tight max-w-4xl">
+                    We build the tools <br />
+                    <span class="text-gray-400 font-normal">we want to use.</span>
+                </h1>
+
+                <p
+                    class="mt-8 text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed font-light hidden-element delay-100">
+                    Thinking In Steps is an internal development studio dedicated to crafting seamless digital
+                    experiences that solve real problems. No fluff, just functional software.
+                </p>
+
+                <div class="mt-12 flex flex-col sm:flex-row gap-4 hidden-element delay-200">
+                    <a href="#projects"
+                        class="bg-primary text-white px-8 py-4 rounded-sm font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 text-center inline-block">
+                        Explore Our Stack
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="absolute top-1/2 left-0 w-24 h-[1px] bg-gradient-to-r from-transparent to-gray-300 hidden md:block w-grow">
+            </div>
+            <div
+                class="absolute top-1/2 right-0 w-24 h-[1px] bg-gradient-to-l from-transparent to-gray-300 hidden md:block w-grow">
+            </div>
+        </section>
+
+        <section class="bg-gray-50/50" id="projects">
+
+            <!-- ═══════════════════════════════════════════
+                 SECTION HEADER + CARD GRID (dock)
+             ═══════════════════════════════════════════ -->
+            <div id="projects-dock" class="max-w-6xl mx-auto px-6 hidden-element section-fade-in"
+                style="transition: padding 0.7s cubic-bezier(0.19,1,0.22,1);">
+
+                <!-- Section header -->
+                <div id="projects-header" class="flex items-end justify-between border-b border-gray-200 pb-8 pt-24">
+                    <div class="space-y-2">
+                        <div class="text-primary font-mono text-xs uppercase tracking-wider mb-2">Portfolio</div>
+                        <h2 class="text-3xl font-bold text-neutral-dark">Current Projects</h2>
+                        <p class="text-gray-500 font-light">The latest tools emerging from our development pipeline.</p>
+                    </div>
+                </div>
+
+                <!-- Expansion Panel — slides in between header and card grid -->
+                <div id="project-expansion-panel" class="overflow-hidden border-x border-gray-200 bg-white relative"
+                    style="max-height:0; opacity:0; transition: max-height 0.75s cubic-bezier(0.19,1,0.22,1), opacity 0.4s ease, margin 0.6s cubic-bezier(0.19,1,0.22,1);">
+
+                    <!-- Inner layout: sidebar + showcase -->
+                    <div class="flex flex-col md:flex-row border-b border-gray-200" style="min-height:600px;">
+
+                        <!-- SIDEBAR -->
+                        <div id="panel-sidebar"
+                            class="md:w-[300px] shrink-0 p-8 md:p-12 flex flex-col border-b md:border-b-0 md:border-r border-gray-100 bg-white">
+                            <div style="position: sticky; top: 112px;">
+                                <div id="panel-icon-wrap"
+                                    class="w-10 h-10 border border-gray-200 flex items-center justify-center text-neutral-dark mb-6">
+                                    <span class="material-symbols-outlined text-xl" id="panel-icon">task_alt</span>
+                                </div>
+                                <h2 id="panel-title" class="text-3xl font-bold text-neutral-dark tracking-tight mb-3"
+                                    style="transition: opacity 0.3s; opacity:0;"></h2>
+                                <p id="panel-desc" class="text-gray-500 font-light leading-relaxed mb-6 text-sm"
+                                    style="transition: opacity 0.3s 0.05s; opacity:0;"></p>
+                                <div id="panel-tags" class="flex flex-wrap gap-2 mb-6"></div>
+
+                                <!-- Metrics/Meta now integrated under description -->
+                                <div id="panel-meta" class="mb-8 pt-8 border-t border-gray-100"></div>
+
+                                <a id="panel-link" href="#"
+                                    class="inline-flex items-center gap-2 text-primary hover:text-orange-600 font-semibold transition-colors group/link"
+                                    style="transition: opacity 0.3s 0.1s; opacity:0;">
+                                    <span id="panel-link-text">View Live</span>
+                                    <span
+                                        class="material-symbols-outlined text-sm transition-transform group-hover/link:translate-x-1">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- SHOWCASE AREA -->
+                        <div id="panel-showcase"
+                            class="flex-1 relative interactive-bg bg-gray-50 border-t md:border-t-0 overflow-y-auto">
+
+                            <!-- Placeholder shown when no images are uploaded -->
+                            <div id="showcase-placeholder"
+                                class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-300 pointer-events-none">
+                                <span class="material-symbols-outlined" style="font-size: 48px; font-weight: 100;">imagesmode</span>
+                                <span class="text-xs font-mono tracking-widest uppercase">No images uploaded</span>
+                            </div>
+
+                            <!-- Dynamic image gallery — populated by JS -->
+                            <div id="showcase-gallery" class="hidden p-8 space-y-6"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card grid -->
+                <div id="projects-grid"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200 stagger-children mt-16"
+                    style="transition: margin 0.7s cubic-bezier(0.19,1,0.22,1);">
+
+                    <!-- Loading state — removed by JS once projects load -->
+                    <div id="projects-loading" class="col-span-full flex items-center justify-center py-16 bg-white">
+                        <div class="flex items-center gap-3 text-xs font-mono text-gray-400">
+                            <span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+                            LOADING PROJECTS...
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="h-24"></div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 relative" id="about">
+            <div class="absolute inset-0 tech-bg opacity-50 -z-10"></div>
+            <div class="max-w-4xl mx-auto text-center hidden-element section-fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-neutral-dark tracking-tight">Think. Build. Refine.
+                </h2>
+                <p class="text-lg text-gray-500 mb-16 leading-relaxed font-light">
+                    Our philosophy is simple: start with the problem, strip away the noise, and build the most direct
+                    path to the solution. We believe the best tools are built by those who use them every day.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-y border-gray-100 py-12 stagger-children">
+                    <div class="flex flex-col items-center justify-center hidden-element">
+                        <span class="text-5xl font-bold text-neutral-dark mb-2">100%</span>
+                        <span
+                            class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Bootstrapped</span>
+                    </div>
+                    <div
+                        class="flex flex-col items-center justify-center md:border-l md:border-r border-gray-100 hidden-element">
+                        <span class="text-5xl font-bold text-neutral-dark mb-2">24/7</span>
+                        <span class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Active
+                            Uptime</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center hidden-element">
+                        <span class="text-5xl font-bold text-neutral-dark mb-2">0</span>
+                        <span
+                            class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Distractions</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-24 px-6 bg-neutral-dark text-white border-t border-gray-800" id="contact">
+            <div class="max-w-3xl mx-auto hidden-element section-fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight mb-4">Get In Touch</h2>
+                    <p class="text-gray-400 font-light">Interested in what we're building? Send us a message.</p>
+                </div>
+
+                <form class="space-y-4 bg-neutral-dark p-4 rounded-sm stagger-children">
+                    <div class="hidden-element">
+                        <input type="text" id="name" name="name" required
+                            class="w-full bg-[#1f1f1f] border border-gray-700 rounded-sm px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                            placeholder="Your Name">
+                    </div>
+
+                    <div class="hidden-element">
+                        <input type="email" id="email" name="email" required
+                            class="w-full bg-[#1f1f1f] border border-gray-700 rounded-sm px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                            placeholder="you@company.com">
+                    </div>
+
+                    <div class="hidden-element">
+                        <textarea id="message" name="message" rows="4" required
+                            class="w-full bg-[#1f1f1f] border border-gray-700 rounded-sm px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                            placeholder="How can we help?"></textarea>
+                    </div>
+
+                    <!-- Google reCAPTCHA v2 Placeholder -->
+                    <div class="hidden-element flex justify-center py-2">
+                        <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY_HERE" data-theme="dark"></div>
+                    </div>
+
+                    <div class="hidden-element pt-2">
+                        <button type="submit"
+                            class="w-full bg-primary text-white py-4 rounded-sm font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-neutral-dark text-white py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center">
+                <a href="#" class="flex items-center transition-opacity hover:opacity-80">
+                    <img src="images/logo.png" alt="Thinking In Steps Logo"
+                        class="h-8 w-auto object-contain brightness-0 invert" />
+                </a>
+            </div>
+
+            <p class="text-sm text-gray-400 font-mono text-right w-full md:w-auto mt-4 md:mt-0">
+                &copy; 2026 ThinkingInSteps. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- FLOATING CLOSE BUTTON (fixed, JS-positioned relative to panel) -->
+    <button id="floating-panel-close-btn"
+        class="fixed z-[60] flex items-center justify-center w-10 h-10 bg-neutral-dark/90 backdrop-blur-md border border-white/10 shadow-2xl text-white hover:bg-primary hover:border-primary transition-all group"
+        style="opacity: 0; pointer-events: none; transition: opacity 0.3s ease, background-color 0.2s, border-color 0.2s;">
+        <span class="material-symbols-outlined text-xl group-hover:rotate-90 transition-transform">close</span>
+    </button>
+
+    <!-- Scripts -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

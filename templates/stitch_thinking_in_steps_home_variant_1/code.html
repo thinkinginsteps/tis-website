@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Thinking In Steps - Internal Dev Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff8400",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#23190f",
+                        "neutral-dark": "#282828",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #f0f0f0 1px, transparent 1px), linear-gradient(to bottom, #f0f0f0 1px, transparent 1px)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }.tech-bg {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-white text-neutral-dark font-body tech-bg">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary text-white p-1.5 flex items-center justify-center rounded-sm">
+<span class="material-symbols-outlined text-2xl">layers</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-neutral-dark">Thinking In Steps</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+<a class="hover:text-primary transition-colors" href="#projects">Our Projects</a>
+<a class="hover:text-primary transition-colors" href="#about">Studio</a>
+<button class="bg-neutral-dark hover:bg-black text-white px-6 py-2.5 rounded-sm font-semibold transition-all shadow-sm">
+                    Contact
+                </button>
+</nav>
+</div>
+</header>
+<main class="pt-20">
+<section class="relative overflow-hidden pt-24 pb-32 px-6 border-b border-gray-100">
+<div class="absolute inset-0 grid-bg pointer-events-none -z-10"></div>
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-gray-200 text-xs font-mono font-medium text-gray-500 mb-8 rounded-sm">
+<span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+                    INTERNAL LAB v2.0
+                </div>
+<h1 class="text-5xl md:text-7xl font-bold text-neutral-dark leading-[1.1] tracking-tight max-w-4xl">
+                    We build the tools <br/>
+<span class="text-gray-400 font-normal">we want to use.</span>
+</h1>
+<p class="mt-8 text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed font-light">
+                    Thinking In Steps is an internal development studio dedicated to crafting seamless digital experiences that solve real problems. No fluff, just functional software.
+                </p>
+<div class="mt-12 flex flex-col sm:flex-row gap-4">
+<button class="bg-primary text-white px-8 py-4 rounded-sm font-semibold hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
+                        Explore Our Stack
+                    </button>
+<button class="bg-white border border-gray-200 text-neutral-dark px-8 py-4 rounded-sm font-semibold hover:bg-gray-50 transition-all">
+                        Internal Portal
+                    </button>
+</div>
+</div>
+<div class="absolute top-1/2 left-0 w-24 h-[1px] bg-gradient-to-r from-transparent to-gray-300 hidden md:block"></div>
+<div class="absolute top-1/2 right-0 w-24 h-[1px] bg-gradient-to-l from-transparent to-gray-300 hidden md:block"></div>
+</section>
+<section class="py-24 px-6 bg-gray-50/50" id="projects">
+<div class="max-w-7xl mx-auto">
+<div class="flex items-end justify-between mb-16 border-b border-gray-200 pb-8">
+<div class="space-y-2">
+<div class="text-primary font-mono text-xs uppercase tracking-wider mb-2">Portfolio</div>
+<h2 class="text-3xl font-bold text-neutral-dark">Current Projects</h2>
+<p class="text-gray-500 font-light">The latest tools emerging from our development pipeline.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+<div class="group relative bg-white p-8 hover:bg-gray-50 transition-all duration-300 h-full min-h-[340px] flex flex-col justify-between">
+<div>
+<div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="mb-8 flex justify-between items-start">
+<div class="w-10 h-10 border border-gray-200 flex items-center justify-center text-neutral-dark bg-white">
+<span class="material-symbols-outlined text-xl">task_alt</span>
+</div>
+<span class="flex h-2 w-2 rounded-full bg-primary ring-4 ring-primary/10"></span>
+</div>
+<h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">TaskLayer</h3>
+<p class="text-gray-500 text-sm leading-relaxed mb-6">A high-performance project management interface designed for minimal latency and deep work blocks.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 pt-6 border-t border-gray-100 mt-auto">
+<span>V 2.4.0</span>
+<span class="w-px h-3 bg-gray-300"></span>
+<span>ACTIVE</span>
+</div>
+</div>
+<div class="group relative bg-white p-8 hover:bg-gray-50 transition-all duration-300 h-full min-h-[340px] flex flex-col justify-between">
+<div>
+<div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="mb-8 flex justify-between items-start">
+<div class="w-10 h-10 border border-gray-200 flex items-center justify-center text-neutral-dark bg-white">
+<span class="material-symbols-outlined text-xl">timer</span>
+</div>
+<span class="flex h-2 w-2 rounded-full bg-primary ring-4 ring-primary/10"></span>
+</div>
+<h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">FlowState</h3>
+<p class="text-gray-500 text-sm leading-relaxed mb-6">Focus-enhancing utility that integrates with system notifications to automate DND periods based on focus levels.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 pt-6 border-t border-gray-100 mt-auto">
+<span>V 0.9.2</span>
+<span class="w-px h-3 bg-gray-300"></span>
+<span>BETA</span>
+</div>
+</div>
+<div class="group relative bg-white p-8 hover:bg-gray-50 transition-all duration-300 h-full min-h-[340px] flex flex-col justify-between">
+<div>
+<div class="absolute top-0 right-0 w-3 h-3 border-t border-r border-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="mb-8 flex justify-between items-start">
+<div class="w-10 h-10 border border-gray-200 flex items-center justify-center text-neutral-dark bg-white">
+<span class="material-symbols-outlined text-xl">hub</span>
+</div>
+<span class="flex h-2 w-2 rounded-full bg-primary ring-4 ring-primary/10"></span>
+</div>
+<h3 class="text-lg font-bold mb-2 group-hover:text-primary transition-colors">DataBridge</h3>
+<p class="text-gray-500 text-sm leading-relaxed mb-6">Low-code API connector providing a unified interface for our disparate internal database clusters.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-mono text-gray-400 pt-6 border-t border-gray-100 mt-auto">
+<span>V 4.1.0</span>
+<span class="w-px h-3 bg-gray-300"></span>
+<span>INTERNAL</span>
+</div>
+</div>
+<div class="group relative bg-gray-50 p-8 flex flex-col items-center justify-center text-center h-full min-h-[340px]">
+<div class="w-10 h-10 border border-dashed border-gray-300 flex items-center justify-center text-gray-400 mb-4 rounded-sm">
+<span class="material-symbols-outlined text-xl">science</span>
+</div>
+<h3 class="text-base font-bold text-gray-400 mb-1">Upcoming Alpha</h3>
+<p class="text-xs text-gray-400 font-mono">STEALTH PROTOTYPING</p>
+</div>
+<div class="bg-gray-200 h-full min-h-[340px] hidden md:block lg:col-span-2"></div>
+</div>
+</div>
+</section>
+<section class="py-32 px-6 relative">
+<div class="absolute inset-0 tech-bg opacity-50 -z-10"></div>
+<div class="max-w-4xl mx-auto text-center">
+<h2 class="text-3xl md:text-4xl font-bold mb-6 text-neutral-dark tracking-tight">Think. Build. Refine.</h2>
+<p class="text-lg text-gray-500 mb-16 leading-relaxed font-light">
+                    Our philosophy is simple: start with the problem, strip away the noise, and build the most direct path to the solution. We are a small team of engineers and designers who believe the best tools are built by those who use them every day.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-y border-gray-100 py-12">
+<div class="flex flex-col items-center justify-center">
+<span class="text-5xl font-bold text-neutral-dark mb-2">12</span>
+<span class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Apps Shipped</span>
+</div>
+<div class="flex flex-col items-center justify-center md:border-l md:border-r border-gray-100">
+<span class="text-5xl font-bold text-neutral-dark mb-2">24/7</span>
+<span class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Active Uptime</span>
+</div>
+<div class="flex flex-col items-center justify-center">
+<span class="text-5xl font-bold text-neutral-dark mb-2">0</span>
+<span class="text-xs font-mono font-medium text-primary uppercase tracking-widest">Third-party deps</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-neutral-dark text-white py-12 px-6">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-white/10 p-1.5 rounded-sm">
+<span class="material-symbols-outlined text-xl">layers</span>
+</div>
+<span class="font-bold tracking-tight">Thinking In Steps</span>
+</div>
+<p class="text-sm text-gray-400 font-mono">
+                © 2024 Thinking In Steps Studio.
+            </p>
+<div class="flex gap-6 text-xs font-mono font-medium text-gray-400 uppercase tracking-wider">
+<a class="hover:text-primary transition-colors" href="#">Portal</a>
+<a class="hover:text-primary transition-colors" href="#">Docs</a>
+<a class="hover:text-primary transition-colors" href="#">GitHub</a>
+</div>
+</div>
+</footer>
+</body></html>

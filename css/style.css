@@ -1,0 +1,155 @@
+/* Base Styles extracted from template */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Background Utilities */
+.tech-bg {
+    background-color: #ffffff;
+    background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+.grid-bg {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+/* =========================================================================
+   ANIMATIONS
+   ========================================================================= */
+
+/* Reveal animations for scroll intersection observer */
+.hidden-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.hidden-element.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays manually or via JS */
+.delay-100 {
+    transition-delay: 100ms;
+}
+
+.delay-200 {
+    transition-delay: 200ms;
+}
+
+.delay-300 {
+    transition-delay: 300ms;
+}
+
+/* Pure CSS Keyframe Initial Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes growRight {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 6rem;
+        /* 24 in Tailwind (w-24) */
+        opacity: 1;
+    }
+}
+
+.w-grow {
+    animation: growRight 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+/* =========================================================================
+   PROJECT GRID EXPANSION
+   ========================================================================= */
+
+/* State when grid has an active expanded card */
+#projects-grid.has-expanded .project-card:not(.expanded) {
+    opacity: 0.4;
+    transform: scale(0.98) translateY(10px);
+    pointer-events: none;
+    /* Prevent clicks on dock items if desired, or keep to switch */
+}
+
+/* Hover over docked items */
+#projects-grid.has-expanded .project-card:not(.expanded):hover {
+    opacity: 0.7;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* The expanded card itself takes full row */
+.project-card.expanded {
+    grid-column: 1 / -1;
+    min-height: 600px;
+    /* Give it more room */
+    z-index: 20;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    /* Tailwind shadow-2xl */
+}
+
+/* Handle the internal visibility */
+.project-card.expanded .project-brief {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+.project-card.expanded .project-detail {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Internal Screenshot animation inside the expanded card */
+.project-card .screenshot-layer {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.2s;
+    /* Delay entry slightly */
+}
+
+.project-card.expanded .screenshot-layer {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Interactive Background Noise/Mesh texture attempt */
+.interactive-bg {
+    background: radial-gradient(circle at 50% 50%, #f3f4f6 0%, #e5e7eb 100%);
+    position: relative;
+}
+
+.interactive-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
