@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     for (let i = 0; i < fillCount; i++) {
         const filler = document.createElement('div');
-        filler.className = 'relative bg-white min-h-[340px] flex items-center justify-center overflow-hidden';
+        filler.className = 'relative bg-white min-h-[340px] hidden md:flex items-center justify-center overflow-hidden';
         filler.innerHTML = `
             <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(240,240,240,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(240,240,240,0.8) 1px, transparent 1px); background-size: 28px 28px;"></div>
             <div class="absolute top-5 left-5 w-4 h-4 border-t border-l border-gray-200"></div>
