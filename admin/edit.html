@@ -916,7 +916,7 @@
                 gallery_urls: galleryUrls,
                 sort_order: parseInt(document.getElementById('f-order').value, 10) || 0,
                 is_visible: document.getElementById('f-visible').checked,
-                build_progress: parseInt(progressSlider.value, 10),
+                build_progress: statusSelect.value === 'STEALTH' ? (parseInt(progressSlider.value, 10) || 0) : 0,
             };
 
             let error;
