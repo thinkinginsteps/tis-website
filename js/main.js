@@ -428,10 +428,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     statusEl.classList.remove('hidden', 'text-red-400');
                     statusEl.classList.add('text-green-400');
                 } else {
-                    throw new Error(data.message || 'Server error');
+                    statusEl.textContent = '✕ ' + (data.message || 'Something went wrong. Please try again.');
+                    statusEl.classList.remove('hidden', 'text-green-400');
+                    statusEl.classList.add('text-red-400');
                 }
-            } catch {
-                statusEl.textContent = '✕ Something went wrong. Please try again.';
+            } catch (err) {
+                statusEl.textContent = '✕ ' + (err.message || 'Something went wrong. Please try again.');
                 statusEl.classList.remove('hidden', 'text-green-400');
                 statusEl.classList.add('text-red-400');
             }
