@@ -169,17 +169,62 @@
         .field textarea { resize: vertical; min-height: 100px; }
         .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
 
-        /* Icon input with live preview */
-        .icon-input-wrap { display: flex; gap: 10px; align-items: flex-start; }
-        .icon-input-wrap input { flex: 1; }
-        .icon-preview {
-            width: 40px; height: 40px;
-            border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            background: #fff; flex-shrink: 0;
-            color: var(--text-dark);
+        /* Icon picker button */
+        .icon-picker-btn {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px; background: #fafafa;
+            border: 1px solid var(--border); cursor: pointer;
+            font-size: 13px; color: var(--text-dark);
+            font-family: 'Inter', sans-serif; transition: border-color 0.15s, background 0.15s;
+            width: 100%; text-align: left;
         }
-        .icon-preview .material-symbols-outlined { font-size: 20px; }
+        .icon-picker-btn:hover { border-color: var(--accent); background: #fff; }
+        .icon-picker-btn .material-symbols-outlined { font-size: 20px; flex-shrink: 0; }
+        .icon-picker-btn-label { flex: 1; font-family: 'Courier New', monospace; font-size: 12px; color: var(--text-muted); }
+        .icon-picker-btn-caret { font-size: 16px !important; color: #9ca3af; }
+
+        /* Icon picker modal */
+        .icon-modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5); z-index: 200;
+            align-items: center; justify-content: center;
+        }
+        .icon-modal-overlay.open { display: flex; }
+        .icon-modal {
+            background: #fff; width: 580px; max-width: 95vw;
+            max-height: 80vh; display: flex; flex-direction: column;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .icon-modal-header {
+            padding: 16px 20px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .icon-modal-header input {
+            flex: 1; border: 1px solid var(--border); background: #fafafa;
+            padding: 8px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+            outline: none; transition: border-color 0.15s;
+        }
+        .icon-modal-header input:focus { border-color: var(--accent); background: #fff; }
+        .icon-modal-close {
+            background: none; border: none; cursor: pointer;
+            color: var(--text-muted); padding: 4px; line-height: 1;
+            transition: color 0.15s;
+        }
+        .icon-modal-close:hover { color: var(--text-dark); }
+        .icon-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+            gap: 4px; padding: 16px; overflow-y: auto; flex: 1;
+        }
+        .icon-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; padding: 10px 6px; cursor: pointer;
+            border: 1px solid transparent; transition: border-color 0.12s, background 0.12s;
+        }
+        .icon-item:hover { border-color: var(--accent); background: #fff8f0; }
+        .icon-item.selected { border-color: var(--accent); background: #fff3e0; }
+        .icon-item .material-symbols-outlined { font-size: 22px; color: var(--text-dark); }
+        .icon-item span:last-child { font-size: 9px; color: var(--text-muted); text-align: center; font-family: 'Courier New', monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; }
 
         /* Image upload */
         .upload-zone {
@@ -334,14 +379,13 @@
                         </div>
                         <div class="field-row">
                             <div class="field">
-                                <label for="f-icon">Icon (Material Symbol name)</label>
-                                <div class="icon-input-wrap">
-                                    <input type="text" id="f-icon" placeholder="e.g. task_alt, hub, timer" value="code" />
-                                    <div class="icon-preview" id="icon-preview">
-                                        <span class="material-symbols-outlined" id="icon-preview-symbol">code</span>
-                                    </div>
-                                </div>
-                                <div class="field-hint">Browse icons at <a href="https://fonts.google.com/icons" target="_blank" style="color:var(--accent);">fonts.google.com/icons</a></div>
+                                <label>Icon</label>
+                                <input type="hidden" id="f-icon" value="code" />
+                                <button type="button" class="icon-picker-btn" id="icon-picker-btn">
+                                    <span class="material-symbols-outlined" id="icon-preview-symbol">code</span>
+                                    <span class="icon-picker-btn-label" id="icon-picker-label">code</span>
+                                    <span class="material-symbols-outlined icon-picker-btn-caret">expand_more</span>
+                                </button>
                             </div>
                         </div>
                         <div class="field-row full">
@@ -494,6 +538,19 @@
 
     <div id="toast"></div>
 
+    <!-- Icon Picker Modal -->
+    <div class="icon-modal-overlay" id="icon-modal-overlay">
+        <div class="icon-modal">
+            <div class="icon-modal-header">
+                <input type="text" id="icon-search" placeholder="Search icons…" autocomplete="off" />
+                <button class="icon-modal-close" id="icon-modal-close">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="icon-grid" id="icon-grid"></div>
+        </div>
+    </div>
+
     <script type="module">
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
         import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../js/supabase-config.js';
@@ -563,13 +620,83 @@
         statusSelect.addEventListener('change', syncProgressVisibility);
         syncProgressVisibility();
 
-        // ── Icon preview ──────────────────────────────────────────────────────
+        // ── Icon picker ───────────────────────────────────────────────────────
+        let ALL_ICONS = null; // loaded once from Google
+
         const iconInput = document.getElementById('f-icon');
         const iconPreviewSymbol = document.getElementById('icon-preview-symbol');
+        const iconPickerBtn = document.getElementById('icon-picker-btn');
+        const iconPickerLabel = document.getElementById('icon-picker-label');
+        const iconModalOverlay = document.getElementById('icon-modal-overlay');
+        const iconModalClose = document.getElementById('icon-modal-close');
+        const iconSearch = document.getElementById('icon-search');
+        const iconGrid = document.getElementById('icon-grid');
 
-        iconInput.addEventListener('input', () => {
-            iconPreviewSymbol.textContent = iconInput.value.trim() || 'code';
+        function setIcon(name) {
+            iconInput.value = name;
+            iconPreviewSymbol.textContent = name;
+            iconPickerLabel.textContent = name;
+        }
+
+        async function loadIcons() {
+            if (ALL_ICONS) return ALL_ICONS;
+            iconGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;font-size:12px;color:#9ca3af;font-family:monospace;">Loading icons…</div>';
+            try {
+                // Fetch the official Material Symbols Outlined codepoints file from GitHub.
+                // This is CORS-friendly and contains every icon name in the font.
+                const res = await fetch('https://raw.githubusercontent.com/google/material-design-icons/master/variablefont/MaterialSymbolsOutlined%5BFILL%2CGRAD%2Copsz%2Cwght%5D.codepoints');
+                const text = await res.text();
+                ALL_ICONS = text.trim().split('\n')
+                    .map(line => line.split(' ')[0])          // icon_name codepoint → icon_name
+                    .filter(n => n && !/^\d/.test(n));        // drop blank lines and digit-leading names
+            } catch {
+                // Hard fallback with a broad set of common icons
+                ALL_ICONS = ['abc','accessibility','account_balance','account_circle','account_tree','add','add_circle','adjust','agriculture','alarm','analytics','anchor','android','announcement','api','apps','archive','arrow_back','arrow_forward','article','assignment','assistant','audio_file','auto_awesome','backup','badge','bar_chart','bluetooth','bolt','book','bookmarks','brightness_5','brush','bubble_chart','bug_report','build','business','cable','calendar_today','call','camera','campaign','cancel','category','chat','check_circle','chevron_right','cloud','cloud_upload','code','coffee','comment','computer','contacts','content_copy','credit_card','dashboard','database','date_range','description','design_services','developer_mode','devices','dns','done','done_all','download','draw','eco','edit','email','emoji_events','explore','extension','favorite','file_copy','filter_list','flag','flash_on','folder','folder_open','forum','functions','grade','grid_view','group','groups','health_and_safety','history','home','hub','image','inbox','insights','integration_instructions','inventory_2','key','label','language','laptop','leaderboard','local_shipping','location_on','lock','mail','manage_accounts','map','memory','message','mic','military_tech','monitor','navigation','new_releases','note','notifications','palette','payments','person','person_add','phone_android','photo_camera','photo_library','pie_chart','place','play_arrow','power','psychology','public','receipt_long','recycling','rocket_launch','savings','schedule','science','search','security','settings','shield','shopping_cart','smart_toy','smartphone','sort','star','stars','storage','store','storefront','table_chart','task_alt','terminal','timer','trending_up','tune','tv','usb','verified','verified_user','video_library','videocam','view_list','view_module','vpn_key','wallet','warehouse','watch','web','wifi','workspace_premium'];
+            }
+            return ALL_ICONS;
+        }
+
+        function renderIconGrid(icons, filter = '') {
+            const q = filter.toLowerCase().replace(/\s+/g, '_');
+            const filtered = q ? icons.filter(i => i.includes(q)) : icons;
+            const current = iconInput.value;
+            // Limit to 500 shown at once for performance; search narrows it down
+            const display = filtered.slice(0, 500);
+            const total = filtered.length;
+            iconGrid.innerHTML = display.map(name => `
+                <div class="icon-item${name === current ? ' selected' : ''}" data-icon="${name}" title="${name}">
+                    <span class="material-symbols-outlined">${name}</span>
+                    <span>${name.replace(/_/g, ' ')}</span>
+                </div>
+            `).join('') + (total > 500 ? `<div style="grid-column:1/-1;text-align:center;padding:12px;font-size:11px;color:#9ca3af;font-family:monospace;">Showing 500 of ${total} — search to narrow results</div>` : '');
+            iconGrid.querySelectorAll('.icon-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    setIcon(el.dataset.icon);
+                    closeIconModal();
+                });
+            });
+        }
+
+        async function openIconModal() {
+            iconModalOverlay.classList.add('open');
+            iconSearch.value = '';
+            const icons = await loadIcons();
+            renderIconGrid(icons);
+            iconSearch.focus();
+        }
+
+        function closeIconModal() {
+            iconModalOverlay.classList.remove('open');
+        }
+
+        iconPickerBtn.addEventListener('click', openIconModal);
+        iconModalClose.addEventListener('click', closeIconModal);
+        iconModalOverlay.addEventListener('click', e => { if (e.target === iconModalOverlay) closeIconModal(); });
+        iconSearch.addEventListener('input', async () => {
+            const icons = await loadIcons();
+            renderIconGrid(icons, iconSearch.value);
         });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeIconModal(); });
 
         // ── Slug auto-generation ──────────────────────────────────────────────
         const titleInput = document.getElementById('f-title');
@@ -739,8 +866,7 @@
                 pageTitle.textContent = `Edit: ${proj.title}`;
                 document.getElementById('f-title').value = proj.title || '';
                 document.getElementById('f-slug').value = proj.slug || '';
-                document.getElementById('f-icon').value = proj.icon || 'code';
-                iconPreviewSymbol.textContent = proj.icon || 'code';
+                setIcon(proj.icon || 'code');
                 document.getElementById('f-description').value = proj.description || '';
                 document.getElementById('f-tags').value = (proj.tags || []).join(', ');
                 document.getElementById('f-version').value = proj.version || '';
