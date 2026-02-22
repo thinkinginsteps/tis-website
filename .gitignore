@@ -13,6 +13,9 @@
 # Temporary files
 .tmp/
 
+# Claude settings (may contain tokens)
+.claude/
+
 # OS generated files
 .DS_Store
 .DS_Store?
