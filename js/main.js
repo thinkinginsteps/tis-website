@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         floatingCloseBtn.addEventListener('click', closePanel);
     }
 
-    // ─── CONTACT FORM (Formspree) ──────────────────────────────────────────────
+    // ─── CONTACT FORM (Web3Forms) ──────────────────────────────────────────────
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         const submitBtn = document.getElementById('contact-submit');
@@ -414,20 +414,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             statusEl.classList.add('hidden');
 
             try {
-                const res = await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID', {
+                const res = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
                     headers: { 'Accept': 'application/json' },
                     body: new FormData(contactForm),
                 });
+                const data = await res.json();
 
-                if (res.ok) {
+                if (data.success) {
                     contactForm.reset();
                     grecaptcha.reset();
                     statusEl.textContent = '✓ Message sent — we\'ll be in touch soon.';
                     statusEl.classList.remove('hidden', 'text-red-400');
                     statusEl.classList.add('text-green-400');
                 } else {
-                    throw new Error('Server error');
+                    throw new Error(data.message || 'Server error');
                 }
             } catch {
                 statusEl.textContent = '✕ Something went wrong. Please try again.';
