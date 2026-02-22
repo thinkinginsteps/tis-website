@@ -398,15 +398,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Check reCAPTCHA is completed
-            const recaptchaResponse = grecaptcha.getResponse();
-            if (!recaptchaResponse) {
-                statusEl.textContent = '✕ Please complete the reCAPTCHA check.';
-                statusEl.classList.remove('hidden', 'text-green-400');
-                statusEl.classList.add('text-red-400');
-                return;
-            }
-
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending…';
             statusEl.className = 'text-sm font-mono text-center py-2';
@@ -423,7 +414,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (data.success) {
                     contactForm.reset();
-                    grecaptcha.reset();
                     statusEl.textContent = '✓ Message sent — we\'ll be in touch soon.';
                     statusEl.classList.remove('hidden', 'text-red-400');
                     statusEl.classList.add('text-green-400');
