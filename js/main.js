@@ -15,6 +15,24 @@ function escHtml(str) {
 
 document.addEventListener('DOMContentLoaded', async () => {
 
+    // ─── MOBILE MENU ──────────────────────────────────────────────────────────
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function toggleMenu(open) {
+        menuBtn.classList.toggle('open', open);
+        mobileMenu.classList.toggle('open', open);
+        mobileMenu.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    menuBtn.addEventListener('click', () => toggleMenu(!menuBtn.classList.contains('open')));
+
+    // Close on nav link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => toggleMenu(false));
+    });
+
     // ─── SCROLL REVEAL ────────────────────────────────────────────────────────
     const revealObserver = new IntersectionObserver((entries, self) => {
         entries.forEach(entry => {

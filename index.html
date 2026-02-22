@@ -67,8 +67,28 @@
                     Contact
                 </a>
             </nav>
+
+            <!-- Mobile burger button -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] group" aria-label="Toggle menu">
+                <span class="burger-bar"></span>
+                <span class="burger-bar"></span>
+                <span class="burger-bar"></span>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-20 left-0 right-0 z-40 bg-white border-b border-gray-200 md:hidden" aria-hidden="true">
+        <nav class="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
+            <a class="mobile-nav-item" href="#" id="mobile-home">Home</a>
+            <a class="mobile-nav-item" href="#projects" id="mobile-projects">Our Projects</a>
+            <a class="mobile-nav-item" href="#about" id="mobile-about">Studio</a>
+            <a href="#contact" id="mobile-contact"
+                class="mobile-nav-item mt-4 bg-primary text-white px-6 py-3 font-semibold text-center transition-all hover:bg-orange-600">
+                Contact
+            </a>
+        </nav>
+    </div>
 
     <main class="pt-20">
         <section class="relative overflow-hidden pt-24 pb-32 px-6 border-b border-gray-100 animate-fade-in-up">
